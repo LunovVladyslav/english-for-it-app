@@ -42,7 +42,12 @@ export const AuthProvider = ({ children }) => {
             return { success: true };
         } catch (error) {
             console.error("Login failed", error);
-            return { success: false, error: error.response?.data || "Login failed" };
+            let errMsg = error.response?.data || "Login failed";
+            // Check if error is HTML
+            if (typeof errMsg === 'string' && errMsg.trim().startsWith('<')) {
+                errMsg = "Service Unavailable: Backend not reachable.";
+            }
+            return { success: false, error: errMsg };
         }
     };
 
@@ -61,7 +66,12 @@ export const AuthProvider = ({ children }) => {
             return { success: true };
         } catch (error) {
             console.error("Registration failed", error);
-            return { success: false, error: error.response?.data || "Registration failed" };
+            let errMsg = error.response?.data || "Registration failed";
+            // Check if error is HTML (e.g., 404/500/405 from server/proxy)
+            if (typeof errMsg === 'string' && errMsg.trim().startsWith('<')) {
+                errMsg = "Service Unavailable: Backend not reachable or method not allowed.";
+            }
+            return { success: false, error: errMsg };
         }
     };
 
