@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: english-for-it-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/english_for_it
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+app:
+  content:
+    path: ../content
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4-turbo-preview
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.statemachine: INFO
