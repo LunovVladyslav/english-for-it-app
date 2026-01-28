@@ -62,6 +62,17 @@ const Login = () => {
                     <Button type="submit" disabled={isLoading} className="mt-4">
                         {isLoading ? 'Signing in...' : 'Sign In'}
                     </Button>
+
+                    <div style={{ textAlign: 'center', margin: '1rem 0', color: 'var(--color-text-dim)' }}>— OR —</div>
+
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        disabled={isLoading}
+                        onClick={() => login('demo@english4it.com', 'Demo1234!')}
+                    >
+                        Try Demo Mode (No Login Required)
+                    </Button>
                 </form>
 
                 <div className="auth-footer">

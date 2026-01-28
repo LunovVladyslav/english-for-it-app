@@ -22,6 +22,18 @@ export const AuthProvider = ({ children }) => {
     }, [token]);
 
     const login = async (email, password) => {
+        // DEMO MODE BYPASS
+        if (email === 'demo@english4it.com' && password === 'Demo1234!') {
+            const demoToken = "demo-mock-jwt-token-12345";
+            const demoUser = { email: 'demo@english4it.com', name: 'Demo User' };
+
+            setToken(demoToken);
+            setUser(demoUser);
+            localStorage.setItem('token', demoToken);
+            localStorage.setItem('user', JSON.stringify(demoUser));
+            return { success: true };
+        }
+
         try {
             const response = await api.post('/auth/login', { email, password });
             const newToken = response.data; // The endpoint returns the token string directly
