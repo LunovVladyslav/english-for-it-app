@@ -1,0 +1,34 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.iml
+
+# Maven (Backend)
+target/
+*.wrapper/
+mvnw
+mvnw.cmd
+.mvn/
+
+# Node (Frontend)
+node_modules/
+dist/
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Security / Secrets
+*.pem
+*.key
+*.crt
+backend/src/main/resources/certs/
+
+# Logs
+*.log
