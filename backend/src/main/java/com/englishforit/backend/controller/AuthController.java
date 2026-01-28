@@ -55,9 +55,16 @@ public class AuthController {
             throw new RuntimeException("User already exists");
         }
 
+        String password = loginRequest.password();
+        if (password == null || password.length() < 8
+                || !password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) {
+            throw new RuntimeException(
+                    "Password must be at least 8 characters long and contain at least one special character");
+        }
+
         User user = new User();
         user.setEmail(loginRequest.email());
-        user.setPassword(passwordEncoder.encode(loginRequest.password()));
+        user.setPassword(passwordEncoder.encode(password));
         user.setName(loginRequest.email()); // default name
         userRepository.save(user);
 

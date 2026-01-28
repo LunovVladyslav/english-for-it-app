@@ -28,6 +28,12 @@ const Register = () => {
             return;
         }
 
+        const passwordRegex = /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (!passwordRegex.test(formData.password)) {
+            setError("Password must be at least 8 characters long and contain at least one special character.");
+            return;
+        }
+
         setIsLoading(true);
         setError('');
 
@@ -67,7 +73,7 @@ const Register = () => {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        placeholder="At least 6 characters"
+                        placeholder="At least 8 chars + 1 symbol"
                     />
                     <Input
                         id="confirmPassword"
