@@ -1,16 +1,44 @@
-# React + Vite
+# English For IT - Frontend Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend client for the English for IT application, built with **React 18** and **Vite**. It features a modern, responsive design and real-time interaction with the backend API.
 
-Currently, two official plugins are available:
+## 🛠 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **React 18**: UI Library.
+*   **Vite**: Build tool and dev server.
+*   **React Router 6 (HashRouter)**: for client-side routing.
+*   **Axios**: HTTP Client with interceptors for JWT injection.
+*   **Vanilla CSS**: Custom design system using CSS variables.
 
-## React Compiler
+## 📂 Project Structure
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+*   `src/api/`: Axios instance configuration.
+*   `src/components/`: Reusable UI components (Buttons, Inputs, Layouts).
+*   `src/context/`: React Context (AuthContext) for global state.
+*   `src/pages/`: Application views (Login, Dashboard, Tutor, etc.).
+*   `src/styles/`: Global CSS variables and reset.
 
-## Expanding the ESLint configuration
+## 📜 Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Script | Description |
+| :--- | :--- |
+| `npm run dev` | Start development server on port 5173. |
+| `npm run build` | Build for production (output to `dist/`). |
+| `npm run preview` | Preview production build locally. |
+| `npm run deploy` | Deploy `dist/` folder to GitHub Pages. |
+
+## 🎨 Design System
+
+We use a variable-based CSS system located in `src/styles/variables.css`.
+*   **Colors**: `var(--color-primary)`, `var(--bg-app)`, etc.
+*   **Spacing**: `var(--spacing-md)`, `var(--radius-lg)`.
+
+## 🚀 Deployment (GitHub Pages)
+
+The app is configured to deploy to GitHub Pages.
+1.  **Base Path**: Configured as `/english-for-it-app/` in `vite.config.js`.
+2.  **Router**: Uses `HashRouter` to support static hosting routing.
+
+```bash
+npm run deploy
+```

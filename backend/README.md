@@ -1,89 +1,61 @@
-# English for IT - Adaptive Learning Platform
+# English For IT - Backend Service
 
-An AI-powered adaptive learning platform designed to help IT professionals master English. This application combines a **Skill Knowledge Graph**, **Adaptive Learning State Machine**, and **Generative AI** to provide a personalized curriculum.
+The backend service for the English for IT application, built with **Spring Boot 3.2**. It handles authentication, data persistence, and integration with AI LLMs via Spring AI.
 
-## 🚀 Features
+## 🏗 Architecture
 
-*   **Adaptive Curriculum**: A dynamic learning flow (`ASSESS` -> `PRACTICE` -> `EVALUATE` -> `ADAPT`) driven by a Finite State Machine.
-*   **Skill Graph**: A Directed Acyclic Graph (DAG) representing language skills (Grammar, Vocabulary, Soft Skills). Progress is tracked per node.
-*   **AI Tutor**: Integrated LLM (via Spring AI) that acts as a context-aware tutor, knowing the user's role, native language, and current lesson context.
-*   **Hybrid Content Management**:
-    *   **Structure**: Database schema managed by **Flyway**.
-    *   **Content**: Detailed lessons are stored in Markdown files (`content/`) and synced to the DB on startup.
-*   **Comprehensive Profile**: Tracks user's job role, native language, and primary goals to tailor the experience.
+*   **Framework**: Spring Boot 3.2 (Java 17)
+*   **Security**: OAuth2 Resource Server (JWT) with RSA key signing.
+*   **Database**: PostgreSQL 15 (Production/Dev), H2 (Integration Tests).
+*   **AI Integration**: Spring AI (OpenAI / OpenRouter).
 
-## 🛠️ Tech Stack
+## 🔌 API Endpoints
 
-*   **Language**: Java 17
-*   **Framework**: Spring Boot 3.2
-*   **Database**: PostgreSQL
-*   **Cache**: Redis (for session/state potential)
-*   **AI Integration**: Spring AI (OpenAI / Anthropic)
-*   **Documentation**: SpringDoc (Swagger UI)
-*   **Build Tool**: Maven
+### Authentication (`/api/auth`)
+*   `POST /register`: Create a new user account.
+*   `POST /login`: Authenticate and receive a JWT Bearer token.
 
-## 📋 Prerequisites
+### AI Tutor (`/api/tutor`)
+*   `POST /chat`: Send a message to the AI tutor and get a response.
+    *   *Payload*: `{"message": "Hello", "userId": "uuid"}`
+    *   *Requires*: `Authorization: Bearer <token>`
 
-*   **Java 17** SDK installed.
-*   **Docker** (optional, recommended for DB/Redis).
-*   **PostgreSQL** running on port `5432`.
-*   **OpenAI API Key** (for the AI Tutor).
+### Learning (`/api/learning`)
+*   `GET /path`: Retrieve the user's learning path.
+*   `GET /status`: Get current progress metrics.
 
-## 🏃‍♂️ Getting Started
+## 🔐 Security Configuration
 
-### 1. Database Setup
-Ensure PostgreSQL is running. You can use Docker:
+The application uses **RSA Key Pairs** to sign and verify JWT tokens.
+*   Keys are located in `src/main/resources/certs/`.
+*   During tests, keys are generated automatically or loaded from classpath.
+
+To generate new keys manually:
 ```bash
-docker run --name postgres-english -e POSTGRES_PASSWORD=password -p 5432:5432 -d postgres
-```
-Create the database:
-```sql
-CREATE DATABASE english_for_it;
+openssl genrsa -out keypair.pem 2048
+openssl rsa -in keypair.pem -pubout -out public.pem
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
 ```
 
-### 2. Configuration
-Set your OpenAI API Key as an environment variable or in `backend/src/main/resources/application.yml`:
-```yaml
-export OPENAI_API_KEY=sk-your-key-here
-```
+## 🧪 Testing
 
-### 3. Run the Backend
-Navigate to the backend directory and run:
+The project uses `JUnit 5` and `MockMvc` for integration testing.
+*   **H2 Database** is used for integration tests to ensure isolation and speed.
+*   **Testcontainers** support is available if needed but currently disabled for speed.
+
 ```bash
-cd backend
-mvn spring-boot:run
+# Run all tests
+mvn clean test
 ```
 
-The application will:
-1.  Run Flyway migrations (`db/migration/`) to set up tables.
-2.  Run `ContentLoader` to ingest markdown files from `../content` into the database.
-3.  Start the server on port `8080`.
+## 🐳 Docker Deployment
 
-### 4. Running Tests
-To execute the comprehensive test suite (Unit + Integration):
+The `Dockerfile` employs a multi-stage build:
+1.  **Build Stage**: Maven image compiles code and skips tests.
+2.  **Run Stage**: Eclipse Temurin JRE Alpine image runs the jar.
+
 ```bash
-mvn test
+# Build and Run just the backend (requires external DB)
+docker build -t english-backend .
+docker run -p 8080:8080 -e SPRING_DATASOURCE_URL=... english-backend
 ```
-*Note: Docker Desktop must be running for Integration Tests (Testcontainers).*
-
-## 📚 API Documentation
-
-Once the application is running, access the interactive Swagger UI at:
-**[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
-
-### Key Endpoints
-*   `POST /api/learning/start?userId={uuid}` - Start a learning session.
-*   `POST /api/tutor/chat` - Chat with the AI Tutor.
-*   `POST /api/onboarding/start` - Start AI Assessment.
-*   `POST /api/practice/quiz/generate` - Generate AI Quiz.
-*   `POST /api/practice/roleplay/start` - Start Roleplay Scenario.
-
-## 📂 Project Structure
-
-*   `backend/`: Spring Boot application source code.
-    *   `model/`: JPA Entities (User, SkillNode, Lesson, etc.).
-    *   `service/`: Business logic (SkillGraph, StateMachine, ContentIngestion).
-    *   `controller/`: REST API endpoints.
-    *   `config/`: State Machine and AI configuration.
-*   `content/`: Markdown files containing the curriculum (Modules 1-6).
-*   `prompts/`: System prompts for the AI Tutor for each module.

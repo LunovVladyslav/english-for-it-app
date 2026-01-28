@@ -18,12 +18,14 @@ A modern, AI-powered platform designed to help IT professionals master English f
 *   **Spring Security**: OAuth2 Resource Server (JWT) & BCrypt.
 *   **Database**: PostgreSQL 15.
 *   **Build Tool**: Maven.
+*   👉 [Read Backend Documentation](backend/README.md)
 
 ### Frontend
 *   **React 18** & **Vite** (SWC)
 *   **Styling**: Vanilla CSS (Premium "Dark Mode" IT Aesthetic).
 *   **State Management**: React Context API.
-*   **Router**: React Router v6.
+*   **Router**: React Router v6 (HashRouter).
+*   👉 [Read Frontend Documentation](frontend/README.md)
 
 ## 📋 Prerequisites
 
