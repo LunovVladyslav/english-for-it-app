@@ -32,6 +32,18 @@ const Login = () => {
         setIsLoading(false);
     };
 
+    const handleDemoLogin = async () => {
+        setIsLoading(true);
+        setError('');
+        const result = await login('demo@english4it.com', 'Demo1234!');
+        if (result.success) {
+            navigate('/dashboard');
+        } else {
+            setError("Demo login failed");
+        }
+        setIsLoading(false);
+    };
+
     return (
         <div className="auth-container">
             <div className="auth-card">
@@ -69,7 +81,7 @@ const Login = () => {
                         type="button"
                         variant="secondary"
                         disabled={isLoading}
-                        onClick={() => login('demo@english4it.com', 'Demo1234!')}
+                        onClick={handleDemoLogin}
                     >
                         Try Demo Mode (No Login Required)
                     </Button>
