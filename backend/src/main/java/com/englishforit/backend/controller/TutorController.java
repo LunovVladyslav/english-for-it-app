@@ -14,10 +14,13 @@ public class TutorController {
 
     private final TutorService tutorService;
     private final UserRepository userRepository;
+    private final com.englishforit.backend.service.DocumentService documentService;
 
-    public TutorController(TutorService tutorService, UserRepository userRepository) {
+    public TutorController(TutorService tutorService, UserRepository userRepository,
+            com.englishforit.backend.service.DocumentService documentService) {
         this.tutorService = tutorService;
         this.userRepository = userRepository;
+        this.documentService = documentService;
     }
 
     @PostMapping("/chat")
@@ -41,5 +44,16 @@ public class TutorController {
 
         String response = tutorService.getTutorResponse(user, message, context);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/documents")
+    public ResponseEntity<String> uploadDocument(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file) {
+        try {
+            documentService.ingestDocument(file);
+            return ResponseEntity.ok("Document uploaded and ingested successfully");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Failed to upload document: " + e.getMessage());
+        }
     }
 }

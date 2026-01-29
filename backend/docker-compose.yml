@@ -16,7 +16,7 @@ services:
       - english-net
 
   db:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg15
     container_name: english-db
     environment:
       - POSTGRES_DB=englishforit
@@ -26,6 +26,15 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - english-net
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
     networks:
       - english-net
 

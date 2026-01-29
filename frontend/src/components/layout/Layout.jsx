@@ -5,11 +5,13 @@ import Header from './Header';
 import './Layout.css';
 
 const Layout = () => {
+    const [isMobileNavOpen, setMobileNavOpen] = React.useState(false);
+
     return (
         <div className="app-layout">
-            <Sidebar />
+            <Sidebar isOpen={isMobileNavOpen} onClose={() => setMobileNavOpen(false)} />
             <div className="main-content-wrapper">
-                <Header />
+                <Header onMenuClick={() => setMobileNavOpen(true)} />
                 <main className="main-content">
                     <Outlet />
                 </main>

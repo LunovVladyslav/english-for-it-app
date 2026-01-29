@@ -23,6 +23,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    private int xp = 0;
+    private int level = 1;
+    private int currentStreak = 0;
+    private java.time.LocalDate lastLoginDate;
+
     @Column(nullable = false)
     private String name;
 

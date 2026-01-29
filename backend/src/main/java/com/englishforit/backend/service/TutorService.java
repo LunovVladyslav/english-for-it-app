@@ -11,9 +11,11 @@ import java.util.Map;
 public class TutorService {
 
     private final ChatClient chatClient;
+    private final DocumentService documentService;
 
-    public TutorService(ChatClient chatClient) {
+    public TutorService(ChatClient chatClient, DocumentService documentService) {
         this.chatClient = chatClient;
+        this.documentService = documentService;
     }
 
     /**
@@ -21,6 +23,12 @@ public class TutorService {
      * Profile.
      */
     public String getTutorResponse(com.englishforit.backend.model.User user, String userMessage, String context) {
+        // Retrieve relevant documents
+        var similarDocuments = documentService.search(userMessage);
+        String ragContext = similarDocuments.stream()
+                .map(org.springframework.ai.document.Document::getContent)
+                .reduce("", (a, b) -> a + "\n" + b);
+
         String userProfile = String.format(
                 "User Role: %s. Level: %s. Native Language: %s. Goal: %s.",
                 user.getJobRole() != null ? user.getJobRole() : "IT Professional",
@@ -34,6 +42,9 @@ public class TutorService {
                 Student Profile:
                 {user_profile}
 
+                Relevant Knowledge Base:
+                {rag_context}
+
                 Current Context: {context}
 
                 User says: {message}
@@ -42,6 +53,7 @@ public class TutorService {
         PromptTemplate template = new PromptTemplate(systemText);
         Prompt prompt = template.create(Map.of(
                 "user_profile", userProfile,
+                "rag_context", ragContext,
                 "context", context,
                 "message", userMessage));
 

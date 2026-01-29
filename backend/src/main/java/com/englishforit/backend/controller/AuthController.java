@@ -27,11 +27,14 @@ public class AuthController {
     // We check password manually against DB (Bcrypt) and issue token.
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.englishforit.backend.service.GamificationService gamificationService;
 
-    public AuthController(TokenService tokenService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(TokenService tokenService, UserRepository userRepository, PasswordEncoder passwordEncoder,
+            com.englishforit.backend.service.GamificationService gamificationService) {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.gamificationService = gamificationService;
     }
 
     @PostMapping("/login")
@@ -42,6 +45,9 @@ public class AuthController {
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
+
+        // Update streak
+        gamificationService.updateStreak(user);
 
         // Create manual authentication object for TokenService
         Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), null,
