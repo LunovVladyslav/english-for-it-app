@@ -18,9 +18,11 @@ public class Module {
     private UUID id;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.Min(value = 1, message = "Module number must be solid")
     private int moduleNumber; // 1 to 6
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "Title is required")
     private String title; // "Soft Skills", etc.
 
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)

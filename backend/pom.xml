@@ -46,6 +46,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-pgvector-store-spring-boot-starter</artifactId>
 		</dependency>
@@ -155,6 +160,14 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/englishforit/backend/model/**</exclude>
+                                <exclude>com/englishforit/backend/dto/**</exclude>
+                                <exclude>com/englishforit/backend/config/**</exclude>
+                                <exclude>com/englishforit/backend/EnglishForItApplication.class</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

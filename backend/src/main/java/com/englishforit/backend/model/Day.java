@@ -19,12 +19,15 @@ public class Day {
 
     @ManyToOne
     @JoinColumn(name = "week_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Week week;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.Min(value = 1, message = "Day number must be positive")
     private int dayNumber; // Overall course day (1-168) or week day (1-7)
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "Title is required")
     private String title;
 
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL)

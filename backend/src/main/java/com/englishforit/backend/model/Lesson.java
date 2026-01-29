@@ -18,14 +18,18 @@ public class Lesson {
 
     @ManyToOne
     @JoinColumn(name = "day_id", nullable = false)
+    @jakarta.validation.constraints.NotNull(message = "Day is required")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Day day;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "Title is required")
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content; // Stored as markdown or JSON structure
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "Type is required")
     private String type; // VOCABULARY, GRAMMAR, QUIZ, TASK
 }

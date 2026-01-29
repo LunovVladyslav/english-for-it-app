@@ -17,10 +17,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
-class SecurityIntegrationTest {
+class SecurityIntegrationTest extends com.englishforit.backend.AbstractIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

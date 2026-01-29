@@ -16,10 +16,13 @@ public class LearningController {
 
     private final LearningFlowService learningFlowService;
     private final UserRepository userRepository;
+    private final com.englishforit.backend.service.ModuleService moduleService;
 
-    public LearningController(LearningFlowService learningFlowService, UserRepository userRepository) {
+    public LearningController(LearningFlowService learningFlowService, UserRepository userRepository,
+            com.englishforit.backend.service.ModuleService moduleService) {
         this.learningFlowService = learningFlowService;
         this.userRepository = userRepository;
+        this.moduleService = moduleService;
     }
 
     @PostMapping("/start")
@@ -40,5 +43,15 @@ public class LearningController {
         } else {
             return ResponseEntity.badRequest().body("Event rejected in current state.");
         }
+    }
+
+    @GetMapping("/modules/{moduleId}/export")
+    public ResponseEntity<com.englishforit.backend.model.Module> exportModule(@PathVariable UUID moduleId) {
+        return ResponseEntity.ok(moduleService.getModuleExport(moduleId));
+    }
+
+    @GetMapping("/modules")
+    public ResponseEntity<java.util.List<com.englishforit.backend.model.Module>> getModules() {
+        return ResponseEntity.ok(moduleService.getAllModules());
     }
 }

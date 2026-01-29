@@ -24,10 +24,10 @@ public class TutorController {
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<String> chat(@RequestBody Map<String, String> payload) {
-        String userIdStr = payload.get("userId");
-        if (userIdStr == null)
-            return ResponseEntity.badRequest().body("userId is required");
+    public ResponseEntity<String> chat(
+            @RequestBody @jakarta.validation.Valid com.englishforit.backend.dto.ChatRequest chatRequest) {
+        String userIdStr = chatRequest.userId();
+        // Validation handled by @Valid, userIdStr won't be blank here.
 
         UUID userId;
         try {
@@ -36,8 +36,8 @@ public class TutorController {
             return ResponseEntity.badRequest().body("Invalid UUID");
         }
 
-        String message = payload.get("message");
-        String context = payload.getOrDefault("context", "General English");
+        String message = chatRequest.message();
+        String context = chatRequest.context() != null ? chatRequest.context() : "General English";
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));

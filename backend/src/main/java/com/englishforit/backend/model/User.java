@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.util.UUID;
 import java.time.LocalDateTime;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -18,9 +21,13 @@ public class User {
     private UUID id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
     private String email;
 
     @Column(nullable = false)
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
     private int xp = 0;
@@ -29,6 +36,7 @@ public class User {
     private java.time.LocalDate lastLoginDate;
 
     @Column(nullable = false)
+    @NotBlank(message = "Name is required")
     private String name;
 
     @Column(name = "current_level")

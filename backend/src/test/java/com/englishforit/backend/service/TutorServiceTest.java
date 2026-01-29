@@ -24,6 +24,9 @@ class TutorServiceTest {
     @Mock
     private ChatClient chatClient;
 
+    @Mock
+    private DocumentService documentService;
+
     @InjectMocks
     private TutorService tutorService;
 

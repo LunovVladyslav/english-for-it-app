@@ -19,12 +19,15 @@ public class Week {
 
     @ManyToOne
     @JoinColumn(name = "module_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Module module;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.Min(value = 1, message = "Week number must be valid")
     private int weekNumber; // 1 to 4
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "Title is required")
     private String title;
 
     @OneToMany(mappedBy = "week", cascade = CascadeType.ALL)

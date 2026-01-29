@@ -22,6 +22,7 @@ public class LearningSession {
     private User user;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "State is required")
     private String currentState; // ASSESS, PRACTICE, EVALUATE, ADAPT, NEXT
 
     @Column(name = "started_at")

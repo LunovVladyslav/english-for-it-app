@@ -40,15 +40,16 @@ class TutorControllerTest {
         User user = new User();
         user.setId(userId);
 
-        Map<String, String> payload = new HashMap<>();
-        payload.put("userId", userId.toString());
-        payload.put("message", "Hello");
+        com.englishforit.backend.dto.ChatRequest chatRequest = new com.englishforit.backend.dto.ChatRequest(
+                userId.toString(),
+                "Hello",
+                null);
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(tutorService.getTutorResponse(eq(user), eq("Hello"), any())).thenReturn("AI Response");
 
         // Act
-        ResponseEntity<String> response = tutorController.chat(payload);
+        ResponseEntity<String> response = tutorController.chat(chatRequest);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -56,9 +57,14 @@ class TutorControllerTest {
     }
 
     @Test
-    void chat_ShouldReturnBadRequest_WhenUserIdMissing() {
-        Map<String, String> payload = new HashMap<>();
-        ResponseEntity<String> response = tutorController.chat(payload);
+    void chat_ShouldReturnBadRequest_WhenUserIdInvalid() {
+        com.englishforit.backend.dto.ChatRequest chatRequest = new com.englishforit.backend.dto.ChatRequest(
+                "invalid-uuid",
+                "Hello",
+                null);
+
+        ResponseEntity<String> response = tutorController.chat(chatRequest);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Invalid UUID", response.getBody());
     }
 }
