@@ -10,11 +10,26 @@ The frontend client for the English for IT application, built with **React 18** 
 *   **Axios**: HTTP Client with interceptors for JWT injection.
 *   **Vanilla CSS**: Custom design system using CSS variables.
 
+## ✨ New Features
+
+### Responsive Design
+*   **Mobile Sidebar**: Collapsible drawer navigation for small screens.
+*   **Adaptive Layout**: Grid systems that stack vertically on mobile devices.
+
+### Components
+*   **DocumentUpload**: Interface for uploading PDFs to the AI Tutor.
+*   **FeedbackForm**: Floating feedback widget with categorized input (Bug, Feature).
+*   **Dashboard**: Real-time display of XP, Level, and Streak.
+
 ## 📂 Project Structure
 
 *   `src/api/`: Axios instance configuration.
-*   `src/components/`: Reusable UI components (Buttons, Inputs, Layouts).
-*   `src/context/`: React Context (AuthContext) for global state.
+*   `src/components/`: Reusable UI components.
+    *   `layout/`: Sidebar, Header, Layout wrapper.
+    *   `ui/`: Buttons, Inputs.
+    *   `DocumentUpload.jsx`: RAG file uploader.
+    *   `FeedbackForm.jsx`: User feedback modal.
+*   `src/context/`: React Context (AuthContext) with **Demo Mode** logic.
 *   `src/pages/`: Application views (Login, Dashboard, Tutor, etc.).
 *   `src/styles/`: Global CSS variables and reset.
 
